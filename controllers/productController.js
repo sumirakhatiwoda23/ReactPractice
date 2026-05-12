@@ -1,16 +1,19 @@
-import Product from "../models/product";
+import Product from "../models/Product.js";
+
 
 
 export const getProducts = async (req, res) => {
-try {
-    const products=await Product.find({})
-    return res.status(200).json(products)
-    
-} catch (error) {
+  try {
+
+    const products = await Product.find({});
+    return res.status(200).json(products);
+
+
+  } catch (err) {
     return res.status(400).json({
-        message: err.message
+      message: err.message
     })
-}
+  }
 }
 
 
@@ -21,10 +24,32 @@ export const getProduct = (req, res) => {
 }
 
 
-export const createProduct = (req, res) => {
-  return res.status(201).json({
-    message: "Product created"
-  });
+export const createProduct = async (req, res) => {
+
+  const { title, description, price, category, brand, stock } = req.body;
+
+  try {
+
+    await Product.create({
+      title,
+      description,
+      price,
+      category,
+      brand,
+      stock,
+      image: req.imagePath,
+    });
+    return res.status(201).json({
+      message: "Product created"
+    });
+
+
+  } catch (err) {
+    return res.status(400).json({
+      message: err.message
+    })
+  }
+
 }
 
 export const updateProduct = (req, res) => {

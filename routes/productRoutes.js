@@ -1,5 +1,7 @@
 import express from 'express';
 import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } from '../controllers/productController.js';
+import { notAllowed } from '../utils/notAllowed.js';
+import { fileCheck } from '../middleware/fileCheck.js';
 
 
 
@@ -7,7 +9,7 @@ import { createProduct, deleteProduct, getProduct, getProducts, updateProduct } 
 const router = express.Router();
 
 
-router.route('/').get(getProducts).post(createProduct);
+router.route('/').get(getProducts).post(fileCheck,createProduct).all(notAllowed);
 router.route('/:id').get(getProduct).patch(updateProduct).delete(deleteProduct);
 
 
