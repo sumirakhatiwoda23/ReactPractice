@@ -1,16 +1,16 @@
+import { MedalIcon } from 'lucide-react'
 import React from 'react'
-import { NavLink } from 'react-router'
-import { FaAlignJustify } from "react-icons/fa";
+import { Link } from 'react-router'
 
 export default function Header() {
   return (
-    <div className='bg-black text-white font-semibold px-5 flex items-baseline justify-between'>
-      <FaAlignJustify size={19}/>
-      <nav className='flex gap-5'>
-      <NavLink to={'/about'}>About</NavLink>
-      <NavLink to={'/contact'}>Contact</NavLink>
+    <div className='px-5 py-2 text-white flex items-baseline justify-between'>
       
-      </nav>
+      <Link to="/" className='flex items-center gap-3 cursor-pointer'>
+        <MedalIcon size={50}/>
+        <h1 className='text-xl font-bold'>The MealDB</h1>
+      </Link>
+
     </div>
   )
 }

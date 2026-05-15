@@ -1,116 +1,58 @@
-// fetch users data from API and generate UI using useEffect
+import { Input } from '@/components/ui/input'
+import CategoryMealList from '../meals/CategoryMealList'
+import React, { useActionState } from 'react'
+import { useNavigate } from 'react-router'
 
-import axios from "axios";
-import { useEffect, useState } from "react";
+
+
+
 
 export default function Home() {
-//   const [users, setUsers] = useState([]);
-const [users,setUsers]=useState([])
 
-//   const getData = async () => {
-//     try {
-//       const response = await axios.get("https://jsonplaceholder.typicode.com/users");
-//       setUsers(response.data);
-//     } catch (err) {
-//       console.log("error:", err);
-//     }
-//   };
-const getData=async()=>{
-    try {
-        const response=await axios.get("https://jsonplaceholder.typicode.com/users")
-        setUsers(response.data)
-        
-    } catch (err) {
-        console.log("error: ",err)
-        
-    }
-}
+const nav=useNavigate();
 
-//   useEffect(() => {
-//     getData();
-//   }, []);
-
-
-useEffect(()=>{
-    getData();
-},[])
-
+  const handleForm=(prevState, formData)=>{
+    const search=formData.get("search");
+    if(!search) return;
+    nav(`/search-meal?s=${search}`)
+  }
+  const [state,action]=useActionState(handleForm,null)
+  
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      {/* <h1 className="text-3xl font-bold mb-8 text-center">Users</h1>
+    <div className='text-white px-14'>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {users.map((user) => (
-          <div
-            key={user.id}
-            className="bg-white rounded-2xl shadow-lg p-5 hover:shadow-2xl transition duration-300"
-          >
-            <h2 className="text-xl font-bold text-blue-600 mb-2">
-              {user.name}
-            </h2>
 
-            <p className="text-sm text-gray-500 mb-2">
-              @{user.username}
-            </p>
 
-            <p className="text-sm">
-              <strong>Email:</strong> {user.email}
-            </p>
+<div className='grid grid-cols-3 max-md:grid-cols-2 max-sm:grid-cols-1 justify-items-center'>
+  <img src="https://www.themealdb.com/images/meal-icon.png" alt="" />
 
-            <p className="text-sm">
-              <strong>Phone:</strong> {user.phone}
-            </p>
+<div className='text-center space-y-4'>
+  <h1 className='text-4xl '>Welcome to TheMealDB</h1>
+  <p>Welcome to TheMealDB: An open, crowd-sourced database of recipes from around the world.
+We offer a free recipe API for anyone wanting to use it, with additional premium features if required.
+</p>
+</div>
 
-            <p className="text-sm mb-2">
-              <strong>Website:</strong> {user.website}
-            </p>
+<img src="https://www.themealdb.com/images/meal-icon.png" alt="" />
 
-            <div className="mt-3">
-              <h3 className="font-semibold text-gray-700">Address</h3>
-              <p className="text-sm text-gray-600">
-                {user.address.street}, {user.address.suite}
-              </p>
-              <p className="text-sm text-gray-600">
-                {user.address.city} - {user.address.zipcode}
-              </p>
-              <p className="text-xs text-gray-500">
-                Geo: {user.address.geo.lat}, {user.address.geo.lng}
-              </p>
-            </div>
 
-            <div className="mt-3">
-              <h3 className="font-semibold text-gray-700">Company</h3>
-              <p className="text-sm">{user.company.name}</p>
-              <p className="text-xs text-gray-500 italic">
-                {user.company.catchPhrase}
-              </p>
-            </div>
-          </div>
-        ))}
-      </div> */}
 
-      <h1>Users</h1>
-      {
-        users.map((person,index)=>{
-           return(
-           <div key={person.id} className="flex flex-row">
-        
-                <h1>{person.username}</h1>
-                <p>{person.email}</p>
-                <p>{person.phone} </p>
-                <p>{person.website}</p>
-         <h1> {person.name} </h1>
-         <p>Address</p>
-         <p> City: {person.address.city}</p>
-         <p> Street: {person.address.street}</p>
-         <p> Suite: {person.address.street}</p>
-         <p> ZipCode: {person.address.zipcode}</p>
-      
 
-           
-            </div>
-        )})
-      }
+</div>
+
+
+
+<hr />
+
+
+<form action={action} className='max-w-sm mt-5 mx-auto'>
+  <Input className="text-center text-2xl"
+  placeholder="Search for meal"
+  name="search"
+  />
+</form>
+
+<CategoryMealList/>
     </div>
-  );
+  )
 }
