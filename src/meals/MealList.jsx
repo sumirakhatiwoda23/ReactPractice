@@ -11,34 +11,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { useApi } from '@/hooks/apiHooks';
 
 
 
 export default function MealList() {
-    const {category}=useParams();
     const nav=useNavigate();
-  const[data,setData]=useState([]);
-  const[load,setLoad]=useState(false);
-  const[err,setErr]=useState();
-
-  const getData=async()=>{
-    setLoad(true);
-    try {
-      const response=await axios.get(`${baseUrl}/filter.php`,{
-        params:{
-          c: category
-        }
-      })
-      setLoad(false);
-      setData(response.data.meals) 
-    } catch (err) {
-      setLoad(false);
-      setErr(err.message);
-    }
-  }
-  useEffect(()=>{
-getData();
-  },[])
+    const {category}=useParams();
+    const[data,load,err]=useApi('filter.php',{c:category})
+//     const {category}=useParams();
+//   const[data,load,err]=useApi('filter.php',{c:category})
+ 
 if(load) return <h1>Loading...</h1>
 if(err)return <h1 className='text-red-300'>{err}</h1>
 console.log(data);
@@ -47,7 +30,7 @@ return (
   <div className='my-11 text-center'>
     <h2 className='text-2xl mb-6 text-white font-bold'>{category} Meals</h2>
   <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4'>
-      {data.map((meal) => (
+      {data.meals?.map((meal) => (
         <Card
           key={meal.idMeal}
          onClick={() => nav(`/meal/${meal.idMeal}`)} 

@@ -7,28 +7,8 @@ export default function SearchMeal() {
 const [searchParams,setSearchParams]=useSearchParams();
 
    const nav=useNavigate();
-  const[data,setData]=useState([]);
-  const[load,setLoad]=useState(false);
-  const[err,setErr]=useState();
-
-  const getData=async()=>{
-    setLoad(true);
-    try {
-      const response=await axios.get(`${baseUrl}/search.php`,{
-        params:{
-          s:searchParams.get('s') 
-        }
-      })
-      setLoad(false);
-      setData(response.data.meals) 
-    } catch (err) {
-      setLoad(false);
-      setErr(err.message);
-    }
-  }
-  useEffect(()=>{
-getData();
-  },[searchParams])
+   const[data,load,err]=useApi('search.php',{s:searchParams.get('s')})
+ 
 if(load) return <h1>Loading...</h1>
 if(err)return <h1 className='text-red-300'>{err}</h1>
 
